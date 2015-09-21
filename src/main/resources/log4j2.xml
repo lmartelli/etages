@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" strict="true" name="XMLConfig">
+	<CustomLevels>
+		<CustomLevel name="VERBOSE" intLevel="700"/>
+	</CustomLevels>
+	
+	<Appenders>
+		<Appender type="Console" name="STDOUT">
+			<Layout type="PatternLayout" pattern="%m%n"/>
+			<Filters>
+				<Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
+			</Filters>
+		</Appender>
+	</Appenders>
+	
+	<Loggers>
+		<Logger name="GenRepartitions" level="warn"/>
+		<Root level="debug">
+			<AppenderRef ref="STDOUT"/>
+		</Root>
+	</Loggers>
+	
+</Configuration>
