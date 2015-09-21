@@ -2,10 +2,13 @@ package jardindivers;
 
 public class ParamsImpl implements Params
 {
-	int surfaceMinBailleur;
 	int nbEtages;
-	int étageMinBailleur;
 	int surfacePlateauMax;
+	int nbFoyerPlateauMax;
+
+	int surfaceMinBailleur;
+	int étageMinBailleur;
+
 	String nomLogementSociaux;
 
 	public int getNbEtages() {
@@ -26,5 +29,9 @@ public class ParamsImpl implements Params
 
 	public int getEtageMinBailleur() {
 		return étageMinBailleur;
+	}
+
+	public int getNbFoyersPlateauMax() {
+		return nbFoyerPlateauMax;
 	}
 }

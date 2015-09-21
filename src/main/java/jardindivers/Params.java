@@ -11,4 +11,6 @@ public interface Params
 	int getNbEtages();
 
 	String getNomLogementSociaux();
+
+	int getNbFoyersPlateauMax();
 }

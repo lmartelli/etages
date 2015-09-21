@@ -7,14 +7,16 @@ public class Plateau
 {
 	protected int étage;
 	protected int surfaceMax;
+	protected int nbFoyerMax;
 	protected Collection<Foyer> foyers = new HashSet<Foyer>();
 
 	private int surfaceOccupéeMin;
 	private int surfaceOccupéeMax;
 
-	public Plateau(int étage, int surfaceMax) {
+	public Plateau(int étage, int surfaceMax, int nbFoyerMax) {
 		this.étage = étage;
 		this.surfaceMax = surfaceMax;
+		this.nbFoyerMax = nbFoyerMax;
 	}
 
 	public Collection<Foyer> getFoyers() {
@@ -36,7 +38,9 @@ public class Plateau
 	 * @return
 	 */
 	public boolean accept(Foyer f, Params p) {
-		if (surfaceOccupéeMin + f.getSurfaceMin() > surfaceMax) {
+		if (foyers.size() >= nbFoyerMax) {
+			return false;
+		} else if (surfaceOccupéeMin + f.getSurfaceMin() > surfaceMax) {
 			// Pas assez d'espace
 			return false;
 		} else if (surfaceOccupéeMax + f.getSurfaceMax() < surfaceMax
@@ -101,7 +105,7 @@ public class Plateau
 	}
 
 	public Plateau clone() {
-		Plateau p = new Plateau(étage, surfaceMax);
+		Plateau p = new Plateau(étage, surfaceMax,nbFoyerMax);
 		if (isEmpty())
 			throw new RuntimeException("Cloning empty plateau");
 		p.foyers.addAll(foyers);
@@ -154,5 +158,15 @@ public class Plateau
 
 	public boolean isEmpty() {
 		return foyers.isEmpty();
+	}
+
+	public boolean validate() {
+		// 1. On accepte pas un étage entier de logements sociaux
+		if (getFoyers().size()==1 && getFoyers().iterator().next().isBailleur())
+			return false;
+		if (getFoyers().size()>nbFoyerMax)
+			return false;
+
+		return true;
 	}
 }

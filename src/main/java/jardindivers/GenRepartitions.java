@@ -23,9 +23,10 @@ public class GenRepartitions
 	public static void main(String args[]) {
 		ParamsImpl params = new ParamsImpl();
 		params.nbEtages = 5;
-		params.étageMinBailleur = 3;
+		params.étageMinBailleur = 2;
 		params.surfaceMinBailleur = 30;
 		params.surfacePlateauMax = 150;
+		params.nbFoyerPlateauMax = 3;
 		params.nomLogementSociaux = "Bailleur";
 		Collection<Foyer> foyers = new ArrayList<Foyer>();
 		foyers.add(new Foyer("Laurent & Coralie",   1, 65,  80, new int[] {3,4}));
@@ -58,36 +59,6 @@ public class GenRepartitions
 	}
 
 	/**
-	 * Validation supplémentaire des répartitions
-	 * @param r
-	 * @return
-	 */
-	public boolean validate(Repartition r)
-	{
-		// 1. On accepte pas un étage entier de logements sociaux
-		for(Plateau p : r.getPlateaux()) {
-			if (!validate(p))
-				return false;
-		}
-		if (r.getEtageMaxBailleur() < params.getEtageMinBailleur())
-			return false;
-		return true;
-	}
-
-	/**
-	 * Validation supplémentaire des plateaux
-	 * 
-	 */
-	public boolean validate(Plateau p) {
-		// 1. On accepte pas un étage entier de logements sociaux
-		if (p.getFoyers().size()==1
-				&& p.getFoyers().iterator().next().getNom().equals(params.getNomLogementSociaux()))
-			return false;
-		
-		return true;
-	}
-
-	/**
 	 * 
 	 * @param r repartition courante
 	 * @param aPlacer foyers restant à placer
@@ -101,7 +72,7 @@ public class GenRepartitions
 			solution.fillBailleur();
 			if (result.contains(solution)) {
 				log.log(VERBOSE,"Répartition déjà générée:\n{}",solution);
-			} else if (!validate(solution)) {
+			} else if (!solution.validate()) {
 				log.trace("Répartition non valide:\n{}",solution);
 			} else {
 				result.add(solution);

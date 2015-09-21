@@ -69,7 +69,7 @@ public class Repartition
 	public Plateau getPlateau(int étage) {
 		Plateau p = plateaux.get(étage);
 		if (p==null) {
-			p = new Plateau(étage,params.getSurfacePlateauMax());
+			p = new Plateau(étage,params.getSurfacePlateauMax(),params.getNbFoyersPlateauMax());
 			log.trace("Création d'un plateau vide à l'étage {}",étage);
 			plateaux.put(étage,p);
 		}
@@ -101,6 +101,24 @@ public class Repartition
 			getPlateau(étage).fillBailleur(params);
 		}
 	}
+
+	/**
+	 * Validation supplémentaire des répartitions
+	 * @param r
+	 * @return
+	 */
+	public boolean validate()
+	{
+		// 1. On accepte pas un étage entier de logements sociaux
+		for(Plateau p : getPlateaux()) {
+			if (!p.validate())
+				return false;
+		}
+		if (getEtageMaxBailleur() < params.getEtageMinBailleur())
+			return false;
+		return true;
+	}
+
 
 	public int getEtageMaxBailleur() {
 		for (int étage=params.getNbEtages(); étage>0; étage--) {
